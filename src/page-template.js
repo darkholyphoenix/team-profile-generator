@@ -1,4 +1,4 @@
-const employeeCard = (engineerArray, internArray) => {
+function employeeCard(engineerArray, internArray) {
 
     console.log(engineerArray,internArray);
 
@@ -41,8 +41,7 @@ ${internArray
 }
 `}
     // destructure page data by section
-const templateData = (employee, manager) => { {
-  const{name, id, email, officeNumber, github, school} = employee;
+function templateData() {
   
     return `
     <!DOCTYPE html>
@@ -77,11 +76,11 @@ const templateData = (employee, manager) => { {
           <p class = "email"> <a href="mailto:${manager.mail}"</a></p>
           <p class= "officeNumber"> ${manager.number}</p>
 
-          ${EmployeeCard(engineerArray, internArray)}
+          
       </main>
     </body>
     </html>
     `;
   };
-    }
+    
   module.exports = templateData
