@@ -1,44 +1,53 @@
 const employees = require('../index.js')
 
-function employeeCard(teamArray) {
-      ${teamArray.filter(({role}) => role === 'Engineer').map(({name, id, email, gitHub}) => {
-        return `
-      <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${name}</br>${role}</h5>
-        <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${id}</li>
-          <li class = "list-group-item">
-            <a href =mailto;${email}">Email: ${email}</a>
-          </li>
-          <li class = "list-group-item">
-            <a href='https://github.com/${gitHub}">GitHub</a>
-          </li>
-`;
-  })
-  .join('')
+const buildTeam = (data) => {
+  const team =[];
+
+  const engineer = data.filter(employees => employees.getrole() === 'Engineer').map({name, id, email, gitHub})
+    team.push(engineer.map(x => generateEngineer(x)))
+  const intern = teamArray.filter(employees => employees.getrole() === 'Intern').map({name, id, email, school}) 
+  team.push(intern.map(x => generateIntern(x)))
+
+  const teamInfo = team.join('');
+  return teamInfo
 }
 
-${internArray
-  .filter(({role}) => role === 'Intern')
-  .map(({name, id, email, role, roleSection}) => {
+function generateEngineer(engineer) {
+    
+        return `
+      <div class="card mx-auto-mb-3" style="width: 18rem;">
+        <h5 class = "card-header">${engineer.name}</br>${role}</h5>
+        <ul class = "list-group list-groupflush">
+          <li class = "list-group-item">ID: ${engineer.id}</li>
+          <li class = "list-group-item">
+            <a href =mailto;${engineer.email}">Email: ${engineer.email}</a>
+          </li>
+          <li class = "list-group-item">
+            <a href='https://github.com/${engineer.gitHub}">GitHub</a>
+          </li>
+`;
+}
+
+
+function generateIntern(intern) {
     return `
     <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${name}</br>${role}</h5>
+        <h5 class = "card-header">${intern.name}</br>${role}</h5>
         <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${id}</li>
+          <li class = "list-group-item">ID: ${intern.id}</li>
           <li class = "list-group-item">
-            <a href =mailto;${email}">Email: ${email}</a>
+            <a href =mailto;${intern.email}">Email: ${intern.email}</a>
           </li>
           <li class = "list-group-item">
-            ${school}
+            ${intern.school}
           </li>
     `;
-  })
-  .join('')
-}
-`}
+  }
+
+
+
     // destructure page data by section
-function templateData() {
+function templateData(teamInfo) {
   
     return `
     <!DOCTYPE html>
@@ -73,7 +82,8 @@ function templateData() {
           <p class = "email"> <a href="mailto:${manager.email}"</a></p>
           <p class= "officeNumber"> ${manager.number}</p>
 
-          ${employeeCard}
+          ${generateEngineer}
+          ${generateIntern}
           
       </main>
     </body>
