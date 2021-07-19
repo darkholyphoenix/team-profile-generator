@@ -1,10 +1,7 @@
-function employeeCard(engineerArray, internArray) {
+const employees = require('../index.js')
 
-    console.log(engineerArray,internArray);
-
-    return `
-      ${engineerArray.filter(({role}) => role === 'Engineer')
-      .map(({name, id, email, role, roleSection}) => {
+function employeeCard(teamArray) {
+      ${teamArray.filter(({role}) => role === 'Engineer').map(({name, id, email, gitHub}) => {
         return `
       <div class="card mx-auto-mb-3" style="width: 18rem;">
         <h5 class = "card-header">${name}</br>${role}</h5>
@@ -73,9 +70,10 @@ function templateData() {
           </div>
           <div class ="card-bidy">
           <p class ="idNumber"> ${manager.id}</p>
-          <p class = "email"> <a href="mailto:${manager.mail}"</a></p>
+          <p class = "email"> <a href="mailto:${manager.email}"</a></p>
           <p class= "officeNumber"> ${manager.number}</p>
 
+          ${employeeCard}
           
       </main>
     </body>

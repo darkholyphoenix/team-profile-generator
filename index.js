@@ -150,28 +150,36 @@ function promptEngineer() {
           } else {
             console.log("You need to enter a username!");
             return false;
-          }
-        },
-      },
-      {
-        type: "confirm",
-        name: "confirmAddEngineer",
-        message: "Would you like to add another engineer?",
-        default: false,
-      },
-    ])
-    .then((engineerData) => {
-        teamArray.push(engineerData);
-        console.log(teamArray);
-        if (engineerData.confirmAddEngineer) {
-        return  buildTeam(engineerData)
-      
-        } else {
-          return buildPage();
-        }
-      })
-  
+         }
+      }
+    }
+  ]).then(engineerData => {
+    teamArray.push(engineerData);
+    console.log(teamArray);
+    buildTeam(engineerData)
+  })
 }
+      
+function employeeConfirm() {    
+   inquirer.prompt ([
+     {
+        type: "confirm",
+        name: "confirmAddEmployee",
+        message: "Would you like to add another team member?",
+        default: false,
+     }
+    
+   ]).then(confirmation => {
+  
+    if (confirmation.confirmAddEmployee) {
+      return createTeam()
+    } else {
+      return buildPage();
+    }
+  
+   })
+  }
+
 
 function promptIntern() {
   inquirer.prompt([
@@ -227,43 +235,37 @@ function promptIntern() {
         }
       },
     },
-    {
-      type: "confirm",
-      name: "confirmAddIntern",
-      message: "Would you like to add another team member?",
-      default: false,
-    }
+
   ])
-  .then((internData) => {
+  .then(internData => {
     teamArray.push(internData);
     console.log(teamArray);
-    
-    if (internData.confirmAddIntern) {
-      return buildTeam(internData)
-    } else {
-      return buildPage();
-    }
+    buildTeam(internData)
   })
 }
+
 function buildTeam(employeeData) {
   // let { name, id, email, github, school } = employeeData;
   if (employeeData.managerName) {
     manager = new Manager(employeeData.managerName, employeeData.managerId, employeeData.managerEmail, employeeData.managerPhone);
     teamArray.push(manager)
-  } else if (engineerData.engineerName) {
-    engineer = new Engineer(engineerData.engineerName, engineerData.engineerId, engineerData.engineerEmail, engineerData.gitHub);
+  } else if (employeeData.engineerName) {
+    engineer = new Engineer(employeeData.engineerName, employeeData.engineerId, employeeData.engineerEmail, employeeData.engineergitHub);
+    teamArray.push(engineer)
   } else if (employeeData.internName) {
-    intern = new Intern(internData.internName, internData.internId, internData.internEmail, employeeData.school);
+    intern = new Intern(employeeData.internName, employeeData.internId, employeeData.internEmail, employeeData.internschool);
+    teamArray.push(intern)
   }
   console.log('teamArray', teamArray);
-  createTeam();
+  employeeConfirm();
 }
   
+
 
 function writeToFile(fileName, data) {
   console.log(fileName)
   return new Promise((resolve, reject) => {
-      fs.writeFile('./dist/README.md', data, err => {
+      fs.writeFile('./dist/index.html', data, err => {
         // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
         if (err) {
           reject(err);
@@ -284,15 +286,10 @@ function writeToFile(fileName, data) {
 
 // // TODO: Create a function to initialize app
 function buildPage() {
-  teamArray.push(teamData)
-  console.log(templateData)
-  .then((teamData) => { 
-      //user answers needs to be a string
-      writeToFile("index.html", templateData(data));
-  }) 
-
+    writeToFile("index.html", templateData(teamArray));
 
 }
+
 
 // // Function call to initialize app
 
