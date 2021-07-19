@@ -1,5 +1,5 @@
 
-const templateData = require('./src/page-template.js')
+const {templateData, employeeCards} = require('./src/page-template.js')
 const fs = require("fs");
 const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
@@ -286,6 +286,8 @@ function writeToFile(fileName, data) {
 
 // // TODO: Create a function to initialize app
 function buildPage() {
+    console.log(teamArray)
+    employeeCards(teamArray)
     writeToFile("index.html", templateData(teamArray));
 
 }

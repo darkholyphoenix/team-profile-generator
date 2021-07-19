@@ -1,26 +1,30 @@
-const employees = require('../index.js')
+const employee = require('../index.js')
+teaminfo=[];
 
-const buildTeam = (data) => {
-  const team =[];
+const employeeCards = (teamArray) => {
+  
+  
 
-  const engineer = data.filter(employees => employees.getrole() === 'Engineer').map({name, id, email, gitHub})
+  const engineer = teamArray.filter(teamArray=> employee.role == "Engineer").map({name, id, email, gitHub})
     team.push(engineer.map(x => generateEngineer(x)))
-  const intern = teamArray.filter(employees => employees.getrole() === 'Intern').map({name, id, email, school}) 
+
+  const intern = teamArray.filter(intern => intern === 'Intern').map(name, id, email, school) 
   team.push(intern.map(x => generateIntern(x)))
 
   const teamInfo = team.join('');
+  console.log(teamInfo)
   return teamInfo
 }
 
-function generateEngineer(engineer) {
+const generateEngineer = (engineer) => {
     
         return `
       <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${engineer.name}</br>${role}</h5>
+        <h5 class = "card-header">${engineer.name}</br>Engineer</h5>
         <ul class = "list-group list-groupflush">
           <li class = "list-group-item">ID: ${engineer.id}</li>
           <li class = "list-group-item">
-            <a href =mailto;${engineer.email}">Email: ${engineer.email}</a>
+            <a href =mailto;${engineer.email}">Email: ${engeineer.email}</a>
           </li>
           <li class = "list-group-item">
             <a href='https://github.com/${engineer.gitHub}">GitHub</a>
@@ -29,17 +33,17 @@ function generateEngineer(engineer) {
 }
 
 
-function generateIntern(intern) {
+const generateIntern = (intern) => {
     return `
     <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${intern.name}</br>${role}</h5>
+        <h5 class = "card-header">${name}</br>Intern</h5>
         <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${intern.id}</li>
+          <li class = "list-group-item">ID: ${id}</li>
           <li class = "list-group-item">
-            <a href =mailto;${intern.email}">Email: ${intern.email}</a>
+            <a href =mailto;${email}">Email: ${email}</a>
           </li>
           <li class = "list-group-item">
-            ${intern.school}
+            ${school}
           </li>
     `;
   }
@@ -82,8 +86,7 @@ function templateData(teamInfo) {
           <p class = "email"> <a href="mailto:${manager.email}"</a></p>
           <p class= "officeNumber"> ${manager.number}</p>
 
-          ${generateEngineer}
-          ${generateIntern}
+          ${employeeCards(teamArray)}
           
       </main>
     </body>
@@ -91,4 +94,4 @@ function templateData(teamInfo) {
     `;
   };
     
-  module.exports = templateData
+  module.exports = {templateData, employeeCards}
