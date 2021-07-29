@@ -4,10 +4,9 @@ const path = require('path');
 const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const generatePage = require('./src/page-template.js');
-const dist = path.resolve(__dirname, "dist");
+const displayPage = path.resolve(__dirname, "dist");
 const indexPath = path.join(dist, 'index.html')
 
 const teamArray = [];
@@ -301,8 +300,8 @@ userQuestions();
 
 // // TODO: Create a function to initialize app
 const buildPage = (teamArray) => {
-    if(!fs.existsSync(dist)){
-      fs.mkdirSync(dist)
+    if(!fs.existsSync(displayPage)){
+      fs.mkdirSync(displayPage)
     }
     fs.writeFileSync(indexPath, generatePage(teamArray), "utf-8", err =>{
       if(err){
