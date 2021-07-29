@@ -1,17 +1,20 @@
 
-const {templateData, employeeCards} = require('./src/page-template.js')
 const fs = require("fs");
+const path = require('path');
 const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
+const generatePage = require('./src/page-template.js');
+const dist = path.resolve(__dirname, "dist");
+const indexPath = path.join(dist, 'index.html')
 
-let teamArray = [];
+const teamArray = [];
 
 
 
-function userQuestions() {
+const userQuestions = () => {
   inquirer
     .prompt([
       {
@@ -67,16 +70,16 @@ function userQuestions() {
           }
         },
       },
-    ]).then (answers => {
+    ]).then ((answers) => {
       console.log(answers)
-      teamArray.push(answers);
+      // teamArray.push(answers);
       buildTeam(answers);
     });
 
   }   
 
 
-function createTeam() {
+const createTeam = () => {
   inquirer
     .prompt([
       {
@@ -93,12 +96,12 @@ function createTeam() {
         promptIntern();
       } 
       else {
-        buildPage();
+        buildPage(teamArray);
       }
     });
 }
 
-function promptEngineer() {
+const promptEngineer = () => {
   inquirer
     .prompt([
       {
@@ -152,15 +155,27 @@ function promptEngineer() {
             return false;
          }
       }
+    },
+    {
+      type: "",
+      name: "engineerGitHub",
+      message: "What is engineers GitHub username? (Required)",
+      validate: (engineerUsernameLink) => {
+        if (engineerUsernameLink) {
+          return true;
+        } else {
+          console.log("You need to enter a username!");
+          return false;
+       }
     }
+  }
+
   ]).then(engineerData => {
-    teamArray.push(engineerData);
-    console.log(teamArray);
     buildTeam(engineerData)
   })
 }
       
-function employeeConfirm() {    
+const employeeConfirm = () => {    
    inquirer.prompt ([
      {
         type: "confirm",
@@ -170,18 +185,18 @@ function employeeConfirm() {
      }
     
    ]).then(confirmation => {
-  
+      
     if (confirmation.confirmAddEmployee) {
-      return createTeam()
+      createTeam()
     } else {
-      return buildPage();
+      buildPage();
     }
   
    })
   }
 
 
-function promptIntern() {
+const promptIntern = () => {
   inquirer.prompt([
     {
       type: "input",
@@ -238,65 +253,65 @@ function promptIntern() {
 
   ])
   .then(internData => {
-    teamArray.push(internData);
-    console.log(teamArray);
     buildTeam(internData)
   })
 }
 
-function buildTeam(employeeData) {
+const buildTeam = (employeeData) => {
   // let { name, id, email, github, school } = employeeData;
   if (employeeData.managerName) {
     manager = new Manager(employeeData.managerName, employeeData.managerId, employeeData.managerEmail, employeeData.managerPhone);
+    manager.getRole();
     teamArray.push(manager)
   } else if (employeeData.engineerName) {
-    engineer = new Engineer(employeeData.engineerName, employeeData.engineerId, employeeData.engineerEmail, employeeData.engineergitHub);
+    engineer = new Engineer(employeeData.engineerName, employeeData.engineerId, employeeData.engineerEmail, employeeData.engineerGitHub);
+    engineer.getRole();
     teamArray.push(engineer)
   } else if (employeeData.internName) {
-    intern = new Intern(employeeData.internName, employeeData.internId, employeeData.internEmail, employeeData.internschool);
+    intern = new Intern(employeeData.internName, employeeData.internId, employeeData.internEmail, employeeData.internSchool);
+    intern.getRole();
     teamArray.push(intern)
   }
   console.log('teamArray', teamArray);
   employeeConfirm();
 }
   
+userQuestions();
 
-
-function writeToFile(fileName, data) {
-  console.log(fileName)
-  return new Promise((resolve, reject) => {
-      fs.writeFile('./dist/index.html', data, err => {
-        // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
-        if (err) {
-          reject(err);
-          // return out of the function here to make sure the Promise doesn't accidentally execute the resolve() function as well
-          return;
-        }
+// function writeToFile(fileName, data) {
+//   return new Promise((resolve, reject) => {
+//       fs.writeFile('./dist/index.html', data, err => {
+//         // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
+//         if (err) {
+//           reject(err);
+//           // return out of the function here to make sure the Promise doesn't accidentally execute the resolve() function as well
+//           return;
+//         }
   
-        // if everything went well, resolve the Promise and send the successful data to the `.then()` method
-        resolve({
-          ok: true,
-          message: 'File created!'
-        });
-      });
-    });
-  };
+//         // if everything went well, resolve the Promise and send the successful data to the `.then()` method
+//         resolve({
+//           ok: true,
+//           message: 'File created!'
+//         });
+//       });
+//     });
+//   };
 
 
 
 // // TODO: Create a function to initialize app
-function buildPage() {
-    console.log(teamArray)
-    employeeCards(teamArray)
-    writeToFile("index.html", templateData(teamArray));
-
+const buildPage = (teamArray) => {
+    if(!fs.existsSync(dist)){
+      fs.mkdirSync(dist)
+    }
+    fs.writeFileSync(indexPath, generatePage(teamArray), "utf-8", err =>{
+      if(err){
+        rejects(err);
+        return;
+      }
+      resolve({
+        ok:true,
+        message:'File created'
+      });
+    });
 }
-
-
-// // Function call to initialize app
-
-
-userQuestions()
-
-  
-  

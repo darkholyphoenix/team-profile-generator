@@ -1,97 +1,106 @@
-const employee = require('../index.js')
-teaminfo=[];
+const Employee = require("../lib/Employee");
 
-const employeeCards = (teamArray) => {
-  
-  
+const teamBuild = (team) => {
+  const teamInfo = [];
 
-  const engineer = teamArray.filter(teamArray=> employee.role == "Engineer").map({name, id, email, gitHub})
-    team.push(engineer.map(x => generateEngineer(x)))
 
-  const intern = teamArray.filter(intern => intern === 'Intern').map(name, id, email, school) 
-  team.push(intern.map(x => generateIntern(x)))
+  const generateManager = (manager) =>{
+    return `
+    <div class="card bg-primary shadow p-1 mx-2 my-2" style="width: 18rem;">
+        <div class="card-header text-white">
+            <h3>${manager.name} </h3>
+            <h4> <i class="fas fa-coffee"></i>  Manager</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">ID: ${manager.id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${manager.email}">${manager.email}</a></li>
+            <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
+        </ul>
+    </div>
+`;
+};
 
-  const teamInfo = team.join('');
-  console.log(teamInfo)
-  return teamInfo
-}
+
 
 const generateEngineer = (engineer) => {
-    
-        return `
-      <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${engineer.name}</br>Engineer</h5>
-        <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${engineer.id}</li>
-          <li class = "list-group-item">
-            <a href =mailto;${engineer.email}">Email: ${engeineer.email}</a>
-          </li>
-          <li class = "list-group-item">
-            <a href='https://github.com/${engineer.gitHub}">GitHub</a>
-          </li>
+  return `
+  <div class="card bg-primary shadow p-1 mx-2 my-2" style="width: 18rem;">
+      <div class="card-header text-white">
+          <h3>${engineer.name}</h3>
+          <h4><i class="fas fa-glasses"></i>  Engineer</h4>
+      </div>
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item">ID: ${engineer.id}</li>
+          <li class="list-group-item">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></li>
+          <li class="list-group-item">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></li>
+      </ul>
+  </div>
 `;
-}
+};
 
 
 const generateIntern = (intern) => {
-    return `
-    <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${name}</br>Intern</h5>
-        <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${id}</li>
-          <li class = "list-group-item">
-            <a href =mailto;${email}">Email: ${email}</a>
-          </li>
-          <li class = "list-group-item">
-            ${school}
-          </li>
-    `;
+  return `
+  <div class="card bg-primary shadow p-1 mx-2 my-2" style="width: 18rem;">
+      <div class="card-header text-white">
+          <h3>${intern.name}</h3>
+          <h4><i class="fas fa-user-graduate"></i>  Intern</h4>
+      </div>
+          <ul class="list-group list-group-flush">
+              <li class="list-group-item">ID: ${intern.id}</li>
+              <li class="list-group-item"> Email: <a href="mailto:${intern.email}">${intern.email}</a></li>
+              <li class="list-group-item"> School: ${intern.school}</li>
+          </ul>
+      </div>
+  </div>
+`;
+};
+
+
+const manager = team.filter(Employee => Employee.getRole() === 'Manager')
+    teamInfo.push(manager.map(x => generateManager(x)))
+    console.log(manager)
+    
+    //filter through team to find Engineers, call generateEngineer() function to map through filtered results and formulate a card for each and push to teamArray
+    const engineer = team.filter(Employee => Employee.getRole() === 'Engineer')
+    teamInfo.push(engineer.map(x => generateEngineer(x)))
+    console.log(engineer)
+
+    //filter through team to find Interns, call generateIntern() function to map through filtered results and formulate a card for each and push to teamArray
+    const intern = team.filter(Employee => Employee.getRole() === 'Intern')
+    teamInfo.push(intern.map(x => generateIntern(x)))
+    console.log(intern)
+
+    return teamInfo;
+
   }
 
-
-
     // destructure page data by section
-function templateData(teamInfo) {
-  
-    return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Portfolio Demo</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-      <link href="https://fonts.googleapis.com/css?family=Public+Sans:300i,300,500&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="style.css">
-    </head>
-    
-    <body>
-      <header>
-        <div class="container flex-row justify-space-between align-center py-3">
-          <h1 class="page-title text-secondary bg-dark py-2 px-3">My Team</h1>
-        </div>
-      </header>
-      <main class="container my-5">
-        <div class = "col-4 my-3">
-        <div class = "card">
-        <div class ="card-header bg-primary">
-          <h3 class = "manager'>Manager</h3>
-          <p class ="name"> ${manager.name}</p>
-          </div>
-          </div>
-          </div>
-          <div class ="card-bidy">
-          <p class ="idNumber"> ${manager.id}</p>
-          <p class = "email"> <a href="mailto:${manager.email}"</a></p>
-          <p class= "officeNumber"> ${manager.number}</p>
-
-          ${employeeCards(teamArray)}
-          
-      </main>
-    </body>
-    </html>
-    `;
-  };
-    
-  module.exports = {templateData, employeeCards}
+    module.exports = team => { 
+      return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <title>Team Portfolio</title>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+          <link href="https://fonts.googleapis.com/css?family=Public+Sans:300i,300,500&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="style.css">
+      </head>
+      <body>
+          <header>
+              <div class="container-lg flex-row justify-space-between text-align-center py-3">
+                  <h1 class="page-title text-light bg-danger py-2 px-3 text-center ">My Team</h1>
+              </div>
+          </header>
+          <main class="container-fluid d-inline-flex p-2 flex-wrap mxy-5 col-12 justify-content-center ml-auto ">
+               ${teamBuild(team)}
+          </main>
+      </body>
+      </html>
+      `;
+     }

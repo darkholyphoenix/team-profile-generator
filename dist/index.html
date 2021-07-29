@@ -19,47 +19,34 @@
       </header>
       <main class="container my-5">
         <div class = "col-4 my-3">
-        <div class = "card">
-        <div class ="card-header bg-primary">
-          <h3 class = "manager'>Manager</h3>
-          <p class ="name"> dave</p>
-          </div>
-          </div>
-          </div>
-          <div class ="card-bidy">
-          <p class ="idNumber"> 1</p>
-          <p class = "email"> <a href="mailto:daveemail"</a></p>
-          <p class= "officeNumber"> 55555</p>
+        <div class="card"
+                <h3>jsdogij</h3>
+                <h4>Manager</h4>
+                <ul>
+                <li class="id">Id: jsdogij</li>
+                <li class="email">Email: <a href="mailto:jsdogij">jsdogij</a></li>
+                <li class="office">Office Number: jsdogij</li>
+                </ul>
+        </div>
+    </div>
 
-          function generateEngineer(engineer) {
-    
-        return `
-      <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${engineer.name}</br>${role}</h5>
-        <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${engineer.id}</li>
-          <li class = "list-group-item">
-            <a href =mailto;${engineer.email}">Email: ${engineer.email}</a>
-          </li>
-          <li class = "list-group-item">
-            <a href='https://github.com/${engineer.gitHub}">GitHub</a>
-          </li>
-`;
+          employees => {
+  teaminfo=[];
+
+  teamInfo.push (...employees
+    .filter(employee => employee.getRole() === "Engineer")
+    .map(engineer => generateEngineer(engineer)).join("")
+  );
+  teamInfo.push (...employee
+    .filter(employee =>employee.getRole() === "Intern")
+    .map(intern => generateIntern(intern)).join("")
+  );
+
+
+  const teamTemplate = (teamInfo.join(""))
+  console.log(teamInfo)
+  return teamTemplate
 }
-          function generateIntern(intern) {
-    return `
-    <div class="card mx-auto-mb-3" style="width: 18rem;">
-        <h5 class = "card-header">${intern.name}</br>${role}</h5>
-        <ul class = "list-group list-groupflush">
-          <li class = "list-group-item">ID: ${intern.id}</li>
-          <li class = "list-group-item">
-            <a href =mailto;${intern.email}">Email: ${intern.email}</a>
-          </li>
-          <li class = "list-group-item">
-            ${intern.school}
-          </li>
-    `;
-  }
           
       </main>
     </body>
