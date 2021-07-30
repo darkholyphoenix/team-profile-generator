@@ -7,7 +7,7 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 const generatePage = require('./src/page-template.js');
 const displayPage = path.resolve(__dirname, "dist");
-const indexPath = path.join(dist, 'index.html')
+const indexPath = path.join(displayPage, 'index.html')
 
 const teamArray = [];
 
@@ -188,7 +188,7 @@ const employeeConfirm = () => {
     if (confirmation.confirmAddEmployee) {
       createTeam()
     } else {
-      buildPage();
+      buildPage(teamArray);
     }
   
    })
@@ -300,6 +300,7 @@ userQuestions();
 
 // // TODO: Create a function to initialize app
 const buildPage = (teamArray) => {
+  console.log(teamArray)
     if(!fs.existsSync(displayPage)){
       fs.mkdirSync(displayPage)
     }
